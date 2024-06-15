@@ -5,7 +5,7 @@ import cors from 'cors';
 import ConnectDB from './db/index.js';
 import AttendenceRouter from './Routes/Attendence.js';
 import StudentRouter from './Routes/Student.js';
-
+import router from './Routes/EventRouter.js';
 
 const app = express();
 app.use(cors());
@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 
 app.use("/students", StudentRouter);
 app.use("/attendence", AttendenceRouter);
+app.use('/events', router);
 
 
 ConnectDB().then(async () => {

@@ -4,45 +4,41 @@ import Attendence from "../models/Attendence.js";
 
 const AddAttendence = async (req, res) => {
     try {
-        const { Student, ListeningSkills, AttentionSpan, Curiosity, ReflectingAbility, Ratings, Attendance } = req.body;
-        const currentDate = new Date().toISOString().split('T')[0];
-
-        // Check if attendance has already been entered for the student today
-        const existingAttendence = await Attendence.findOne({
-            Student,
-            Date: currentDate
-        });
-
-        console.log(existingAttendence);
-
-        if (existingAttendence) {
-            return res.status(409).json({ message: 'Attendance already entered for today' });
-        }
-
-        // Create a new attendance record
-        const newAttendence = new Attendence({
-            Student: new mongoose.Types.ObjectId(Student),
-            ListeningSkills,
-            AttentionSpan,
-            Curiosity,
-            ReflectingAbility,
-            Ratings: {
-                ListeningSkills: Ratings.ListeningSkills,
-                AttentionSpan: Ratings.AttentionSpan,
-                Curiosity: Ratings.Curiosity,
-                ReflectingAbility: Ratings.ReflectingAbility
-            },
-            Attendance,
-            Date: currentDate // Add date field to store the date of the attendance entry
-        });
-
-        await newAttendence.save();
-
-        res.status(201).json(newAttendence);
+      const { Student, Ratings, Attendance } = req.body;
+      const currentDate = new Date().toISOString().split('T')[0];
+  
+      // Check if attendance has already been entered for the student today
+      const existingAttendance = await Attendence.findOne({
+        Student,
+        Date: currentDate,
+      });
+  
+      if (existingAttendance) {
+        return res
+          .status(409)
+          .json({ message: 'Attendance already entered for today' });
+      }
+  
+      // Create a new attendance record
+      const newAttendance = new Attendence({
+        Student: new mongoose.Types.ObjectId(Student),
+        Ratings: {
+          ListeningSkills: Ratings.ListeningSkills,
+          AttentionSpan: Ratings.AttentionSpan,
+          Curiosity: Ratings.Curiosity,
+          ReflectingAbility: Ratings.ReflectingAbility,
+        },
+        Attendance,
+        Date: currentDate, // Add date field to store the date of the attendance entry
+      });
+  
+      await newAttendance.save();
+  
+      res.status(201).json(newAttendance);
     } catch (error) {
-        res.status(409).json({ message: error.message });
+      res.status(409).json({ message: error.message });
     }
-};
+  };
 
 const GetAttendence = async (req, res) => {
     try {

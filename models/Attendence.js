@@ -6,22 +6,6 @@ const attendenceSchema = new mongoose.Schema({
         ref: "Student",
         required: true,
     },
-    ListeningSkills: {
-        type: String,
-        required: true,
-    },
-    AttentionSpan: {
-        type: String,
-        required: true,
-    },
-    Curiosity: {
-        type: String,
-        required: true,
-    },
-    ReflectingAbility: {
-        type: String,
-        required: true,
-    },
     Ratings: {
         ListeningSkills: {
             type: Number,
@@ -43,7 +27,7 @@ const attendenceSchema = new mongoose.Schema({
     Attendance: {
         type: String,
         enum: ['Yes', 'No'],
-        required: true,
+        default: 'No',
     },
     Date: {
         type: String,
