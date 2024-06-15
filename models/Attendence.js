@@ -4,6 +4,7 @@ const attendenceSchema = new mongoose.Schema({
     Student: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Student",
+        required: true,
     },
     ListeningSkills: {
         type: String,
@@ -17,12 +18,32 @@ const attendenceSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    ReflectingAbility : {
+    ReflectingAbility: {
         type: String,
         required: true,
     },
-    ratings: {
-        type: Number,
+    Ratings: {
+        ListeningSkills: {
+            type: Number,
+            required: true,
+        },
+        AttentionSpan: {
+            type: Number,
+            required: true,
+        },
+        Curiosity: {
+            type: Number,
+            required: true,
+        },
+        ReflectingAbility: {
+            type: Number,
+            required: true,
+        },
+    },
+    Attendance: {
+        type: String,
+        enum: ['Yes', 'No'],
+        required: true,
     },
     Date: {
         type: String,

@@ -4,13 +4,13 @@ import Attendence from "../models/Attendence.js";
 
 const AddAttendence = async (req, res) => {
     try {
-        const { Student, ListeningSkills, AttentionSpan, Curiosity, ReflectingAbility, ratings } = req.body;
+        const { Student, ListeningSkills, AttentionSpan, Curiosity, ReflectingAbility, Ratings, Attendance } = req.body;
         const currentDate = new Date().toISOString().split('T')[0];
 
         // Check if attendance has already been entered for the student today
         const existingAttendence = await Attendence.findOne({
             Student,
-            date: currentDate
+            Date: currentDate
         });
 
         console.log(existingAttendence);
@@ -26,7 +26,13 @@ const AddAttendence = async (req, res) => {
             AttentionSpan,
             Curiosity,
             ReflectingAbility,
-            ratings,
+            Ratings: {
+                ListeningSkills: Ratings.ListeningSkills,
+                AttentionSpan: Ratings.AttentionSpan,
+                Curiosity: Ratings.Curiosity,
+                ReflectingAbility: Ratings.ReflectingAbility
+            },
+            Attendance,
             Date: currentDate // Add date field to store the date of the attendance entry
         });
 
@@ -37,6 +43,7 @@ const AddAttendence = async (req, res) => {
         res.status(409).json({ message: error.message });
     }
 };
+
 const GetAttendence = async (req, res) => {
     try {
         const Attendences = await Attendence.find();
